@@ -5,19 +5,19 @@
 @font-face {
     font-family: "Inter Web";
     font-weight: 400;
-    src: url("../fonts/Inter-Regular.woff2") format("woff2")
+    src: url("../fonts/RobotoMono-VariableFont_wght.ttf") format("ttf")
 }
 
 @font-face {
     font-family: "Inter Web";
     font-weight: 600;
-    src: url("../fonts/Inter-SemiBold.woff2") format("woff2")
+    src: url("../fonts/RobotoMono-Italic-VariableFont_wght.ttf") format("ttf")
 }
 
 @font-face {
     font-family: "Inter Web";
     font-weight: 800;
-    src: url("../fonts/Inter-SemiBold.woff2") format("woff2")
+    src: url("../fonts/RobotoMono-Italic-VariableFont_wght.ttf") format("ttf")
 }
 
 /*------------------------------------*\
@@ -37,8 +37,9 @@
     --global-color-alpha-transparent: hsl(var(--global-color-alpha-hsl) / .75);
     --global-color-alpha-x-transparent: hsl(var(--global-color-alpha-hsl) / .3);
 
-    --global-color-neutral-xxxx-light: #F5F6FA;
-    --global-color-neutral-xxx-light: #E2E3E7;
+    --global-color-title: #32AFA9;
+    --global-color-subtitle: #A4D4AE;
+    --global-color-card: #F0CF85;
     --global-color-neutral-xx-light: #caccd4;
     --global-color-neutral-x-light: #b5b6c0;
     --global-color-neutral-light: #a0a1ad;
@@ -49,7 +50,7 @@
     --global-color-neutral-xxx-dark: #35374d;
     --global-color-neutral-xxxx-dark: #20223a;
     --global-color-blue: #81ADF0;
-    --color-neutral-xxxx-dark: #20223A;
+    --color-neutral-xxxx-dark: white;
     --color-neutral-xxxx-light: #35374D;
 
     --global-page-color: var(--color-neutral-xxxx-light);
@@ -105,11 +106,12 @@
 
 html {
     line-height: 1.5;
-    font-family: "Inter Web", Helvetica, arial, sans-serif;
+    font-family: 'Roboto Mono', monospace;
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
+    height: 100vh;
+    }
 
 
 
@@ -302,11 +304,20 @@ input::placeholder {
 */
 
 .o-container {
-    margin-left: auto;
+    /* margin-left: auto;
     margin-right: auto;
-    max-width: 79.5em;
+    max-width: 79.5em; */
     /* 79.5 * 16px = 1272 */
+    display: flex;
+    justify-content: center;
     width: 100%;
+}
+
+.o-container__title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
 }
 
 /*
@@ -553,6 +564,36 @@ input::placeholder {
     ---
     Website main logo
 */
+
+
+.c-grid-container{
+    display: grid;
+    grid-template-columns: 1;
+    justify-content: center;
+    gap: 1rem;
+    padding-left: 7rem;
+    padding-right: 7rem;
+}
+
+.c-grid-item-title{
+    text-align: center;
+    color: var(--global-color-title);
+    padding-bottom: 2rem;
+}
+
+
+.c-item-solar-card{
+    background-color: var(--global-color-card);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+}
+
+.c-item-solar-card:hover{
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.4);
+}
+
 
 .c-logo {
     height: var(--global-whitespace);
@@ -881,6 +922,10 @@ input::placeholder {
 
 .c-option--hidden:checked + .c-custom-option .c-custom-option__symbol {
   opacity: 1;
+}
+
+.c-header-title{
+  color: #32AFA9C9;
 }
 
 
