@@ -1,24 +1,45 @@
-let filter, chart, startup_r, popup
+let filter, chart, startup_r, overlay, chartcount
 var htmlElementOverlay = ""
 var planet_data_card
 var density = [];
 var mass = [];
 var avgTemp = []
 var gravity = []
-var count_planets = []
-var count_comet = []
-var count_dwarf_planets = []
-var count_moons = []
-var count_astroids = []
+var counts = [];
+var counts_labels = ["Planets", "Comets", "Moons", "Dwarf planets"]
 var labels = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"]
 
 
 function on() {
-    document.getElementById("overlay").style.display = "block";
+    overlay.classList.add('open-popup');
+    // document.getElementById("overlay").style.display = "block";
+    var c_data = getDataCountPlanet();
+    console.log(c_data.data)
+    const ctx = document.getElementById('myCount');
+    // console.log(counts[0], counts[1], counts[2], counts[3])
+    chartcount = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: counts_labels,
+            datasets: [{
+                label: 'Number of objects in space',
+                data: [counts[0], counts[1], counts[2], counts[3], counts[4]],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
 
 function off() {
-    document.getElementById("overlay").style.display = "none";
+    overlay.classList.remove('open-popup');
+    // document.getElementById("overlay").style.display = "none";
 }
 
 
@@ -226,32 +247,32 @@ let showResultNeptune = queryResponse => {
 
 let showResultCountPlanet = queryResponse => {
 
-    count_planets.push(queryResponse.knownCount);
-    console.log(count_planets);
+    counts.push(queryResponse.knownCount);
+    console.log(counts)
 }
 
-let showResultCountAstroid = queryResponse => {
+// let showResultCountAstroid = queryResponse => {
 
-    count_astroids.push(queryResponse.knownCount);
-    console.log(count_astroids);
-}
+//     counts.push(queryResponse.knownCount);
+//     console.log(counts)
+// }
 
 let showResultCountComet = queryResponse => {
 
-    count_comet.push(queryResponse.knownCount);
-    console.log(count_comet);
+    counts.push(queryResponse.knownCount);
+    console.log(counts)
 }
 
 let showResulCountMoon = queryResponse => {
 
-    count_moons.push(queryResponse.knownCount);
-    console.log(count_moons);
+    counts.push(queryResponse.knownCount);
+    console.log(counts)
 }
 
 let showResultCountDwarfplanet = queryResponse => {
 
-    count_dwarf_planets.push(queryResponse.knownCount);
-    console.log(count_dwarf_planets);
+    counts.push(queryResponse.knownCount);
+    console.log(counts)
 }
 
 
@@ -315,8 +336,8 @@ let getAPI = async () => {
     const request_count_planet = await fetch(`${ENDPOINT_COUNT_PLANET}`);
     const data_count_planet = await request_count_planet.json();
 
-    const request_count_astroid = await fetch(`${ENDPOINT_COUNT_ASTROID}`);
-    const data_count_astroid = await request_count_astroid.json();
+    // const request_count_astroid = await fetch(`${ENDPOINT_COUNT_ASTROID}`);
+    // const data_count_astroid = await request_count_astroid.json();
 
     const request_count_comet = await fetch(`${ENDPOINT_COUNT_COMET}`);
     const data_count_comet = await request_count_comet.json();
@@ -341,7 +362,7 @@ let getAPI = async () => {
 
 
     showResultCountPlanet(data_count_planet);
-    showResultCountAstroid(data_count_astroid);
+    // showResultCountAstroid(data_count_astroid);
     showResultCountComet(data_count_comet);
     showResulCountMoon(data_moon);
     showResultCountDwarfplanet(data_dward_planet);
@@ -382,27 +403,16 @@ const getDataPlanet = function () {
 
 
 const getDataCountPlanet = function () {
-    const planet_data = {
-        gcm3: {
-            labels: labels,
-            data: [density[0], density[1], density[2], density[3], density[4], density[5], density[6], density[7]],
+    console.log("ahhaha")
+    console.log(counts[0]);
+    const planet_countdata = {
+        counts: {
+            labels: counts_labels,
+            data: [counts[0], counts[1], counts[2], counts[3]],
         },
-        kg: {
-            labels: labels,
-            data: [mass[0], mass[1], mass[2], mass[3], mass[4], mass[5], mass[6], mass[7]],
-        },
-        Celcius: {
-            labels: labels,
-            data: [avgTemp[0], avgTemp[1], avgTemp[2], avgTemp[3], avgTemp[4], avgTemp[5], avgTemp[6], avgTemp[7]],
-        },
-        ms2: {
-            labels: labels,
-            data: [gravity[0], gravity[1], gravity[2], gravity[3], gravity[4], gravity[5], gravity[6], gravity[7]],
-        },
-
     }
 
-    return planet_data
+    return planet_countdata
 }
 
 
@@ -422,6 +432,8 @@ const filterTypesPlanetData = function () {
         })
     });
 }
+
+
 
 const draw_chart = function (label, data) {
     if (chart) {
@@ -453,14 +465,13 @@ const draw_chart = function (label, data) {
 }
 
 
-
 document.addEventListener('DOMContentLoaded', function () {
     // 1 We will query the API with longitude and latitude.
     console.log('DOM geladen');
     filter = document.querySelectorAll('.js-filter');
     startup_r = document.querySelector('.js-startup');
     planet_data_card = document.querySelector('.js-overlay')
-    popup = document.getElementById("popup");
+    overlay = document.getElementById("popup")
     filterTypesPlanetData();
     getAPI();
 });

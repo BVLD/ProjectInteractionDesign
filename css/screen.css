@@ -565,9 +565,8 @@ input::placeholder {
     Website main logo
 */
 
-#overlay{
+/* #overlay{
   position: fixed;
-  display: none;
   height: 100vh;
   top: 0;
   left: 0;
@@ -575,9 +574,30 @@ input::placeholder {
   bottom: 0;
   background-color: rgba(0,0,0,0.5);
   z-index: 2;
-  cursor: pointer;
+} */
+
+.container-popup{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.popup{
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    padding: 0 30px 30px;
+    visibility: hidden;
+    transition: transform 1s, top 1s;
+}
+
+.open-popup{
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+}
 
 .info-planet{
     display: grid;
@@ -613,8 +633,12 @@ input::placeholder {
     margin-bottom: 2rem;
 }
 
+.c-item-solar-card-chart{
+    background-color:var(--global-color-card);
+    border-radius: 1rem;
+}
+
 .c-item-planet-info{
-    grid-column: span 2;
     background-color: var(--global-color-card);
     padding: 1rem;
     border-radius: 1rem;

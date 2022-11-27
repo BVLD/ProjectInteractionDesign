@@ -33,8 +33,24 @@
             </h5>
         </div>
 
-        <div id="overlay" onclick="off()">
-            <canvas id="myCountChart" width="5" height="2"></canvas>
+        <div class="container-popup" onclick="off()">
+            <div class="popup" id="popup">
+                <div class="c-item-solar-card-chart u-x1">
+                    <div class="card__header">
+                        <div class="card_title">
+                            <h3>The planets in numbers</h3>
+                        </div>
+                        <div class="card_select">
+                            <input class="c-option o-hide-accessible js-filter js-startup" data-count-type="g * cm³"
+                                name="range" type="radio" id="counts" checked>
+                            <label class="c-label" for="counts" id="Body density in g.cm³">
+                                Number of objects
+                            </label>
+                        </div>
+                    </div>
+                    <canvas id="myCount"></canvas>
+                </div>
+            </div>
         </div>
 
 
