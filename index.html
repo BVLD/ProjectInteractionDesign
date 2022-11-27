@@ -20,21 +20,35 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Source+Sans+Pro:wght@400;700&family=Work+Sans&display=swap"
         rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script/app.js"></script>
 </head>
 
 <body>
     <section class="o-row ">
+        <div class="c-grid-item-title">
+            <h1>The Solar system</h1>
+            <h5>"Mankind was born on earth.
+                It was never meant to die here."
+            </h5>
+        </div>
+
+        <div id="overlay" onclick="off()">
+            <canvas id="myCountChart" width="5" height="2"></canvas>
+        </div>
+
+
         <div class="c-grid-container">
-            <div class="c-grid-item-title">
-                <h1>The Solar system</h1>
-                <h5>"Mankind was born on earth.
-                    It was never meant to die here."</h5>
-            </div>
             <div class="c-item-solar-card">
-                <div class="c-solar-card">
-                    <div class="c-solar-card__image">
-                        <img src="img/mercury.svg" alt="Mercury">
+                <div class="c-solar-card-mercurius js-mercury">
+                    <div class="c-solar-card__text-mercurius ">
+                        <h2>Mercury</h2>
+                        <p>Mass: 13231 * 10^24 kg</p>
                     </div>
+                </div>
+            </div>
+            <div class=" c-item-solar-card">
+                <div class="c-solar-card-venus js-venus">
                     <div class="c-solar-card__text">
                         <h2>Mercury</h2>
                         <p>Mass: 13231 * 10^24 kg</p>
@@ -42,10 +56,7 @@
                 </div>
             </div>
             <div class="c-item-solar-card">
-                <div class="c-solar-card">
-                    <div class="c-solar-card__image">
-                        <img src="img/mercury.svg" alt="Mercury">
-                    </div>
+                <div class="c-solar-card-earth js-earth">
                     <div class="c-solar-card__text">
                         <h2>Mercury</h2>
                         <p>Mass: 13231 * 10^24 kg</p>
@@ -53,10 +64,7 @@
                 </div>
             </div>
             <div class="c-item-solar-card">
-                <div class="c-solar-card">
-                    <div class="c-solar-card__image">
-                        <img src="img/mercury.svg" alt="Mercury">
-                    </div>
+                <div class="c-solar-card-mars js-mars">
                     <div class="c-solar-card__text">
                         <h2>Mercury</h2>
                         <p>Mass: 13231 * 10^24 kg</p>
@@ -64,14 +72,78 @@
                 </div>
             </div>
             <div class="c-item-solar-card">
-                <div class="c-solar-card">
-                    <div class="c-solar-card__image">
-                        <img src="img/mercury.svg" alt="Mercury">
-                    </div>
+                <div class="c-solar-card-jupiter js-jupiter">
                     <div class="c-solar-card__text">
                         <h2>Mercury</h2>
                         <p>Mass: 13231 * 10^24 kg</p>
                     </div>
+                </div>
+            </div>
+            <div class="c-item-solar-card">
+                <div class="c-solar-card-saturne js-saturne">
+                    <div class="c-solar-card__text">
+                        <h2>Mercury</h2>
+                        <p>Mass: 13231 * 10^24 kg</p>
+                    </div>
+                </div>
+            </div>
+            <div class="c-item-solar-card">
+                <div class="c-solar-card-uranus js-uranus">
+                    <div class="c-solar-card__text">
+                        <h2>Mercury</h2>
+                        <p>Mass: 13231 * 10^24 kg</p>
+                    </div>
+                </div>
+            </div>
+            <div class="c-item-solar-card">
+                <div class="c-solar-card-neptune js-neptune ">
+                    <div class="c-solar-card__text">
+                        <h2>Mercury</h2>
+                        <p>Mass: 13231 * 10^24 kg</p>
+                    </div>
+                </div>
+            </div>
+            <div class="c-item-solar-card u-x1">
+                <div class="card__header">
+                    <div class="card_title">
+                        <h3>The planets in numbers</h3>
+                    </div>
+                    <div class="card_select">
+                        <input class="c-option o-hide-accessible js-filter js-startup" data-type="g * cm³" name="range"
+                            type="radio" id="gcm3" checked>
+                        <label class="c-label" for="gcm3" id="Body density in g.cm³">
+                            Density
+                        </label>
+
+                        <input class="c-option o-hide-accessible js-filter" name="range" data-type="10^n kg"
+                            type="radio" id="kg" checked>
+                        <label class="c-label" for="kg" id="Boby mass in 10^n kg">
+                            Mass
+                        </label>
+
+                        <input class="c-option o-hide-accessible js-filter" name="range" type="radio" data-type="m/s²"
+                            id="ms2" checked>
+                        <label class="c-label" for="ms2" id="Surface gravity in m.s-2">
+                            Gravity
+                        </label>
+
+                        <input class="c-option o-hide-accessible js-filter" data-type="C°" name="range" type="radio"
+                            id="Celcius" checked>
+                        <label class="c-label" for="Celcius">
+                            Average temperature
+                        </label>
+
+
+                    </div>
+                </div>
+                <canvas id="myChart" width="5" height="2"></canvas>
+                <div class="c-item-chard">
+
+                </div>
+            </div>
+            <div class="c-item-solar-card u-x2">
+                <div class="c-item-know-counts">
+                    <button onclick="on()" class="btn u-btn-see-more">Explore space and discover more numbers</button>
                 </div>
             </div>
         </div>
@@ -80,3 +152,67 @@
 </body>
 
 </html>
+
+
+
+<!-- <div id="overlay" class="js-overlay" onclick="off()">
+            <h1>Mercure</h1>
+            <div class="info-planet">
+                <div class="c-item-planet-info js-planet-discover">
+                    <div class="c-item-planet-info-data-title">
+                        <h2>Discovered by:</h2>
+                    </div>
+                    <div class="c-item-planet-info__text">
+                        <p>Mass</p>
+                    </div>
+                </div>
+                <div class="c-item-planet-info js-planet-mass">
+                    <div class="c-item-planet-info-data-title">
+                        <h2>Mass</h2>
+                    </div>
+                    <div class="c-item-planet-info__text">
+                        <p>Mass</p>
+                    </div>
+                </div>
+                <div class="c-item-planet-info js-planet-density">
+                    <div class="c-item-planet-info-data-title">
+                        <h2>Mass</h2>
+                    </div>
+                    <div class="c-item-planet-info__text">
+                        <p>Mass</p>
+                    </div>
+                </div>
+                <div class="c-item-planet-info js-planet-gravity">
+                    <div class="c-item-planet-info-data-title">
+                        <h2>Mass</h2>
+                    </div>
+                    <div class="c-item-planet-info__text">
+                        <p>Mass</p>
+                    </div>
+                </div>
+                <div class="c-item-planet-info js-planet-escape">
+                    <div class="c-item-planet-info-data-title">
+                        <h2>Mass</h2>
+                    </div>
+                    <div class="c-item-planet-info__text">
+                        <p>Mass</p>
+                    </div>
+                </div>
+                <div class="c-item-planet-info js-planet-radius">
+                    <div class="c-item-planet-info-data-title">
+                        <h2>Mass</h2>
+                    </div>
+                    <div class="c-item-planet-info__text">
+                        <p>Mass</p>
+                    </div>
+                </div>
+                <div class="c-item-planet-info js-planet-avgtemp">
+                    <div class="c-item-planet-info-data-title">
+                        <h2>Mass</h2>
+                    </div>
+                    <div class="c-item-planet-info__text">
+                        <p>Mass</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
