@@ -37,7 +37,8 @@
     --global-color-alpha-transparent: hsl(var(--global-color-alpha-hsl) / .75);
     --global-color-alpha-x-transparent: hsl(var(--global-color-alpha-hsl) / .3);
 
-    --global-color-title: #32AFA9;
+    /* --global-color-title: #32AFA9; */
+    --global-color-title: #001253;
     --global-color-subtitle: #A4D4AE;
     --global-color-card: #F0CF85;
     --global-color-neutral-xx-light: #caccd4;
@@ -237,19 +238,20 @@ hr {
 a,
 a:visited {
     transition: all var(--global-transitionTiming-alpha);
-    color: var(--global-color-alpha);
+    color: var(--global-color-neutral-xxxx-dark);
     outline-color: var(--global-link-BoxShadowColor);
     outline-width: medium;
     outline-offset: 2px;
+    text-decoration: none;
 }
 
 a:hover,
 a:focus {
-    color: var(--global-color-alpha-light);
+    color: var(--global-color-neutral-xxxx-dark);
 }
 
 a:active {
-    color: var(--global-color-alpha-dark);
+    color: var(--global-color-neutral-xxxx-dark);
 }
 
 label,
@@ -588,9 +590,11 @@ input::placeholder {
     top: 0;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.1);
-    padding: 0 30px 30px;
+    /* padding: 0 30px 30px; */
     visibility: hidden;
+    padding: 30px;
     transition: transform 1s, top 1s;
+    cursor: pointer;
 }
 
 .open-popup{
@@ -617,6 +621,14 @@ input::placeholder {
     gap: 1rem;
 }
 
+/* .c-grid-container-extra{
+    display: grid;
+    grid-template-columns:repeat(8, 1fr);
+    justify-content: center;
+    padding: 1.5rem;
+    gap: 1rem;
+} */
+
 .c-grid-item-title{
     text-align: center;
     color: var(--global-color-title);
@@ -625,12 +637,14 @@ input::placeholder {
 
 
 .c-item-solar-card{
-    grid-column: span 2;
+    grid-column: span 8;
     background-color: var(--global-color-card);
     padding: 1.5rem;
     border-radius: 1rem;
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
     margin-bottom: 2rem;
+    cursor: pointer;
+    visibility: none;
 }
 
 .c-item-solar-card-chart{
@@ -650,14 +664,15 @@ input::placeholder {
 
 
 .u-x1{
-    grid-column: span 5;
+    grid-column: span 8;
+    display: none;
 }
 
 .u-x2{
     display: flex;
     align-items: center;
     justify-content: center;
-    grid-column: span 3;
+    grid-column: span 1;
 }
 
 
@@ -706,16 +721,17 @@ input::placeholder {
 
 .popup{
     width: 400px;
-    background: #000;
+    background: #FFF;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.1);
     text-align: center;
-    padding: 0 30px 30px;
+    /* padding: 0 30px 30px; */
     color: #333;
     visibility: hidden;
     transition: transform 0.4s, top 0.4s;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
 }
 
 .open-popup{
@@ -1070,6 +1086,10 @@ input::placeholder {
     Utility classes to put specific colors onto elements
 */
 
+.u-h2{
+    font-size: 1.5rem;
+}
+
 .u-color-neutral {
     color: var(--global-color-neutral);
 }
@@ -1265,6 +1285,20 @@ input::placeholder {
     .u-5-of-6-bp1 {
         width: 83.3333333333% !important;
     }
+
+    .u-x1{
+        grid-column: span 8;
+        display: block;
+    }
+
+    .c-item-solar-card{
+        grid-column: span 8;
+        background-color: var(--global-color-card);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+        margin-bottom: 2rem;
+    }
 }
 
 @media (min-width: 768px) {
@@ -1310,6 +1344,21 @@ input::placeholder {
 
     .u-5-of-6-bp2 {
         width: 83.3333333333% !important;
+    }
+
+
+      .u-x1{
+        grid-column: span 8;
+        display: block;
+    }
+
+    .c-item-solar-card{
+        grid-column: span 8;
+        background-color: var(--global-color-card);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+        margin-bottom: 2rem;
     }
 }
 
@@ -1357,6 +1406,20 @@ input::placeholder {
     .u-5-of-6-bp3 {
         width: 83.3333333333% !important;
     }
+
+    .c-item-solar-card{
+        grid-column: span 2;
+        background-color: var(--global-color-card);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+        margin-bottom: 2rem;
+    }
+
+    .u-x1{
+        grid-column: span 8;
+        display: block;
+    }
 }
 
 @media (min-width: 1200px) {
@@ -1402,6 +1465,20 @@ input::placeholder {
 
     .u-5-of-6-bp4 {
         width: 83.3333333333% !important;
+    }
+
+    .c-item-solar-card{
+        grid-column: span 2;
+        background-color: var(--global-color-card);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+        margin-bottom: 2rem;
+    }
+
+    .u-x1{
+        grid-column: span 8;
+        display: block;
     }
 }
 
@@ -1459,7 +1536,7 @@ No media query since this is the default in mobile first design
 
     a,
     a:visited {
-        text-decoration: underline;
+        text-decoration: none;
     }
 
     a[href]:after {

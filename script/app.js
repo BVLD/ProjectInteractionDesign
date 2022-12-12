@@ -1,4 +1,5 @@
 let filter, chart, startup_r, overlay, chartcount
+let currentElementId;
 var htmlElementOverlay = ""
 var planet_data_card
 var density = [];
@@ -10,20 +11,45 @@ var counts_labels = ["Planets", "Comets", "Moons", "Dwarf planets"]
 var labels = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"]
 
 
-function on() {
+async function on(id) {
     overlay.classList.add('open-popup');
-    // document.getElementById("overlay").style.display = "block";
-    var c_data = getDataCountPlanet();
-    console.log(c_data.data)
-    const ctx = document.getElementById('myCount');
-    // console.log(counts[0], counts[1], counts[2], counts[3])
-    chartcount = new Chart(ctx, {
+
+    const ENDPOINT = `https://api.le-systeme-solaire.net/rest/bodies/${id}`;
+
+    console.log(ENDPOINT)
+
+    const element = document.querySelector('.js-popup');
+
+    const request = await fetch(`${ENDPOINT}`);
+    const data = await request.json();
+
+    console.log(data.name)
+
+    let htmlElementOverlay = ""
+
+    htmlElementOverlay += `
+            <div class="text js-textf">
+                    <div class="grid-container">
+                        <div class="grid-item">
+                            <h1>${data.name}</h1>
+                            <canvas id="ChartDataDensity" width="5" height="2"></canvas>
+                            <canvas id="ChartDataGravity" width="5" height="2"></canvas>
+                            <canvas id="ChartDataTemp" width="5" height="2"></canvas>
+                        </div>
+                    </div>
+                </div>`
+
+    element.innerHTML = htmlElementOverlay;
+
+
+    const ctx = document.getElementById('ChartDataDensity');
+    chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: counts_labels,
+            labels: ["Density"],
             datasets: [{
-                label: 'Number of objects in space',
-                data: [counts[0], counts[1], counts[2], counts[3], counts[4]],
+                label: 'Body density in g.cm3',
+                data: [data.density],
                 borderWidth: 1
             }]
         },
@@ -35,6 +61,47 @@ function on() {
             }
         }
     });
+
+    const ctxd = document.getElementById('ChartDataGravity');
+    chart = new Chart(ctxd, {
+        type: 'bar',
+        data: {
+            labels: ["Gravity"],
+            datasets: [{
+                label: 'Surface gravity in m.s²',
+                data: [data.gravity],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const ctxdd = document.getElementById('ChartDataTemp');
+    chart = new Chart(ctxdd, {
+        type: 'bar',
+        data: {
+            labels: ["Avg temp"],
+            datasets: [{
+                label: 'Mean temperature in K.',
+                data: [data.avgTemp],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
 }
 
 function off() {
@@ -42,25 +109,50 @@ function off() {
     // document.getElementById("overlay").style.display = "none";
 }
 
+const ListenToClickEvent = function () {
+    console.log("Er is geklikt a neef")
+    let cards = document.querySelectorAll('.js-cardje');
+
+    for (let card of cards) {
+        card.addEventListener('click', function () {
+            console.log("click")
+
+            currentElementId = card.getAttribute('data-typeid')
+            console.log(currentElementId)
+
+            on(currentElementId);
+        })
+    }
+
+
+}
+
+
+
+
+
 
 let showResultMercury = queryResponse => {
 
 
     const Mercury_Card = document.querySelector('.js-mercury')
+    console.log(queryResponse.id)
 
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     let htmlElementCard = ""
     let htmlOverlay = ""
+
+    console.log(queryResponse)
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     htmlElementCard += `
-                <div class="c-solar-card-mercurius js-mercury">
+                <a href="#" data-typeid = "${queryResponse.id}" class = "c-solar-card-mercurius js-mercury js-cardje">
                     <div class="c-solar-card__text-mercurius ">
-                        <h2>Mercury</h2>
-                        <p>Mass: 13231 * 10^24 kg</p>
+                        <h2>${queryResponse.name}</h2>
+                        <p>Mass: ${queryResponse.mass.massValue} * 10^24 kg</p>
                     </div>
-                </div>
+                </a>
             `;
 
 
@@ -74,22 +166,31 @@ let showResultMercury = queryResponse => {
     Mercury_Card.innerHTML = htmlElementCard;
     console.log(queryResponse)
 
+    var id = queryResponse.id
+
+    console.log(id)
+
+    ListenToClickEvent();
+
 };
+
 
 let showResultVenus = queryResponse => {
     const Venus_Card = document.querySelector('.js-venus')
+    console.log(queryResponse.id)
     let htmlElement = ""
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     htmlElement += `
-                </div class="c-solar-card-venus js-venus">
-                    <div class="c-solar-card__text">
-                        <h2>Mercury</h2>
-                        <p>Mass: 13231 * 10^24 kg</p>
+            <a href="#" data-typeid = "${queryResponse.id}"
+                class = "c-solar-card-mercurius js-mercury js-cardje" >
+                    <div class="c-solar-card__text-mercurius ">
+                        <h2>${queryResponse.name}</h2>
+                        <p>Mass: ${queryResponse.mass.massValue} * 10^24 kg</p>
                     </div>
-                </div>
+            </a>
             `;
 
     density.push(queryResponse.density)
@@ -98,6 +199,9 @@ let showResultVenus = queryResponse => {
     avgTemp.push(tempcelcius)
     gravity.push(queryResponse.gravity)
     Venus_Card.innerHTML = htmlElement;
+
+    ListenToClickEvent();
+
 };
 
 let showResultEarth = queryResponse => {
@@ -108,12 +212,12 @@ let showResultEarth = queryResponse => {
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     htmlElement += `
-                <div class="c-solar-card-mercurius js-earth">
+                <a href="#" data-typeid = "${queryResponse.id}" class = "c-solar-card-mercurius js-mercury js-cardje">
                     <div class="c-solar-card__text-mercurius ">
                         <h2>${queryResponse.name}</h2>
-                        <p>Mass: ${queryResponse.mass.massValue} kg</p>
+                        <p>Mass: ${queryResponse.mass.massValue} * 10^24 kg</p>
                     </div>
-                </div>
+                </a>
             `;
 
     density.push(queryResponse.density)
@@ -122,6 +226,8 @@ let showResultEarth = queryResponse => {
     avgTemp.push(tempcelcius)
     gravity.push(queryResponse.gravity)
     Earth_Card.innerHTML = htmlElement;
+
+    ListenToClickEvent();
 };
 
 let showResultMars = queryResponse => {
@@ -132,12 +238,12 @@ let showResultMars = queryResponse => {
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     htmlElement += `
-                <div class="c-solar-card-mercurius js-earth">
+                <a href="#" data-typeid = "${queryResponse.id}" class = "c-solar-card-mercurius js-mercury js-cardje">
                     <div class="c-solar-card__text-mercurius ">
                         <h2>${queryResponse.name}</h2>
-                        <p>Mass: ${queryResponse.mass.massValue} x 10^23 kg</p>
+                        <p>Mass: ${queryResponse.mass.massValue} * 10^24 kg</p>
                     </div>
-                </div>
+                </a>
             `;
 
     density.push(queryResponse.density)
@@ -146,6 +252,8 @@ let showResultMars = queryResponse => {
     avgTemp.push(tempcelcius)
     gravity.push(queryResponse.gravity)
     Mars_Card.innerHTML = htmlElement;
+
+    ListenToClickEvent();
 };
 
 let showResultJupiter = queryResponse => {
@@ -156,12 +264,12 @@ let showResultJupiter = queryResponse => {
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     htmlElement += `
-                <div class="c-solar-card-mercurius js-earth">
+                <a href="#" data-typeid = "${queryResponse.id}" class = "c-solar-card-mercurius js-mercury js-cardje">
                     <div class="c-solar-card__text-mercurius ">
                         <h2>${queryResponse.name}</h2>
-                        <p>Mass: ${queryResponse.mass.massValue} x 10^27 kg</p>
+                        <p>Mass: ${queryResponse.mass.massValue} * 10^24 kg</p>
                     </div>
-                </div>
+                </a>
             `;
 
     density.push(queryResponse.density)
@@ -170,6 +278,8 @@ let showResultJupiter = queryResponse => {
     avgTemp.push(tempcelcius)
     gravity.push(queryResponse.gravity)
     Jupiter_Card.innerHTML = htmlElement;
+
+    ListenToClickEvent();
 };
 
 let showResultSaturn = queryResponse => {
@@ -180,12 +290,12 @@ let showResultSaturn = queryResponse => {
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     htmlElement += `
-                <div class="c-solar-card-mercurius js-earth">
+                <a href="#" data-typeid = "${queryResponse.id}" class = "c-solar-card-mercurius js-mercury js-cardje">
                     <div class="c-solar-card__text-mercurius ">
                         <h2>${queryResponse.name}</h2>
-                        <p>Mass: ${queryResponse.mass.massValue} x 10^26 kg</p>
+                        <p>Mass: ${queryResponse.mass.massValue} * 10^24 kg</p>
                     </div>
-                </div>
+                </a>
             `;
 
     density.push(queryResponse.density)
@@ -194,6 +304,8 @@ let showResultSaturn = queryResponse => {
     avgTemp.push(tempcelcius)
     gravity.push(queryResponse.gravity)
     Saturn_Card.innerHTML = htmlElement;
+
+    ListenToClickEvent();
 };
 
 let showResultUranus = queryResponse => {
@@ -204,12 +316,12 @@ let showResultUranus = queryResponse => {
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     htmlElement += `
-                <div class="c-solar-card-mercurius js-earth">
+                <a href="#" data-typeid = "${queryResponse.id}" class = "c-solar-card-mercurius js-mercury js-cardje">
                     <div class="c-solar-card__text-mercurius ">
                         <h2>${queryResponse.name}</h2>
-                        <p>Mass: ${queryResponse.mass.massValue} x 10^25 kg</p>
+                        <p>Mass: ${queryResponse.mass.massValue} * 10^24 kg</p>
                     </div>
-                </div>
+                </a>
             `;
 
     density.push(queryResponse.density)
@@ -218,6 +330,8 @@ let showResultUranus = queryResponse => {
     avgTemp.push(tempcelcius)
     gravity.push(queryResponse.gravity)
     Uranus_Card.innerHTML = htmlElement;
+
+    ListenToClickEvent();
 };
 
 let showResultNeptune = queryResponse => {
@@ -228,12 +342,12 @@ let showResultNeptune = queryResponse => {
     // We gaan eerst een paar onderdelen opvullen
     // Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
     htmlElement += `
-                <div class="c-solar-card-mercurius js-earth">
+                <a href="#" data-typeid = "${queryResponse.id}" class = "c-solar-card-mercurius js-mercury js-cardje">
                     <div class="c-solar-card__text-mercurius ">
                         <h2>${queryResponse.name}</h2>
-                        <p>Mass: ${queryResponse.mass.massValue} x 10^26 kg</p>
+                        <p>Mass: ${queryResponse.mass.massValue} * 10^24 kg</p>
                     </div>
-                </div>
+                </a>
             `;
 
 
@@ -243,6 +357,8 @@ let showResultNeptune = queryResponse => {
     avgTemp.push(tempcelcius)
     gravity.push(queryResponse.gravity)
     Neptune_Card.innerHTML = htmlElement;
+
+    ListenToClickEvent();
 };
 
 let showResultCountPlanet = queryResponse => {

@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Blockport - Sign in</title>
+    <title>Solar system</title>
     <meta name="description" content="This is my HTML5 boilerplate.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#e85e00">
 
-    <link rel="icon" href="favicon.svg">
+    <link rel="icon" href="favicon_sun.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="manifest" href="manifest.json">
 
@@ -28,35 +28,21 @@
     <section class="o-row ">
         <div class="c-grid-item-title">
             <h1>The Solar system</h1>
-            <h5>"Mankind was born on earth.
+            <h2 class="u-h2">"Mankind was born on earth.
                 It was never meant to die here."
-            </h5>
+            </h2>
         </div>
 
         <div class="container-popup" onclick="off()">
-            <div class="popup" id="popup">
-                <div class="c-item-solar-card-chart u-x1">
-                    <div class="card__header">
-                        <div class="card_title">
-                            <h3>The planets in numbers</h3>
-                        </div>
-                        <div class="card_select">
-                            <input class="c-option o-hide-accessible js-filter js-startup" data-count-type="g * cm³"
-                                name="range" type="radio" id="counts" checked>
-                            <label class="c-label" for="counts" id="Body density in g.cm³">
-                                Number of objects
-                            </label>
-                        </div>
-                    </div>
-                    <canvas id="myCount"></canvas>
-                </div>
+            <div class="popup js-popup" id="popup">
+                <canvas id="ChartDataPlanet" width="5" height="2"></canvas>
             </div>
         </div>
 
 
         <div class="c-grid-container">
-            <div class="c-item-solar-card">
-                <div class="c-solar-card-mercurius js-mercury">
+            <div href="/index.html" class="c-item-solar-card">
+                <div class="c-solar-card-mercurius js-mercury " data-typeid="1">
                     <div class="c-solar-card__text-mercurius ">
                         <h2>Mercury</h2>
                         <p>Mass: 13231 * 10^24 kg</p>
@@ -64,8 +50,8 @@
                 </div>
             </div>
             <div class=" c-item-solar-card">
-                <div class="c-solar-card-venus js-venus">
-                    <div class="c-solar-card__text">
+                <div class="c-solar-card-venus js-venus" data-typeid="2">
+                    <div class="c-solar-card__text-venus">
                         <h2>Mercury</h2>
                         <p>Mass: 13231 * 10^24 kg</p>
                     </div>
@@ -155,11 +141,6 @@
                 <canvas id="myChart" width="5" height="2"></canvas>
                 <div class="c-item-chard">
 
-                </div>
-            </div>
-            <div class="c-item-solar-card u-x2">
-                <div class="c-item-know-counts">
-                    <button onclick="on()" class="btn u-btn-see-more">Explore space and discover more numbers</button>
                 </div>
             </div>
         </div>
